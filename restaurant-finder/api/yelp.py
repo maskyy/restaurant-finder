@@ -1,6 +1,7 @@
 from aiohttp import ClientSession
 
 from ..config import CONFIG
+from ..models import tznow
 
 HEADERS = {"Authorization": "Bearer " + CONFIG["YELP_API_KEY"]}
 
@@ -11,6 +12,7 @@ async def search_businesses(
     longitude: float,
     term: str | None = None,
     radius_meters: int = 1000,
+    open_at: int | None = None,
     limit: int = 10,
     offset: int = 0,
 ) -> list[dict[str]]:
@@ -22,6 +24,7 @@ async def search_businesses(
         "longitude": longitude,
         "term": term,
         "radius": radius_meters,
+        "open_at": open_at,
         "limit": limit,
         "offset": offset,
     }

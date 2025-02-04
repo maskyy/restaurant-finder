@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from aiohttp import ClientSession
 from telebot import types
 from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -56,7 +58,11 @@ def prepare_answer(query: Query) -> tuple[str, list[InlineKeyboardMarkup]]:
 
 @bot.message_handler(content_types=["text"])
 async def find_restaurants(msg: types.Message):
-    criteria, nq = extract_search_criteria(msg.text)
+    try:
+        criteria, nq = extract_search_criteria(msg.text)
+    except ValueError:
+        return await bot.reply_to(msg, "Sorry, I couldn't understand the query.")
+
     if criteria["location"] is None:
         return await bot.reply_to(msg, "Sorry, I couldn't understand the location.")
     async with ClientSession() as session:
@@ -72,7 +78,17 @@ async def find_restaurants(msg: types.Message):
         query = nq.query
         if query is None:
             terms = criteria["cuisine"]
-            restaurants = await search_businesses(session, criteria["latitude"], criteria["longitude"], terms)
+            open_at = None
+            if criteria["time"] is not None:
+                open_at = int(datetime.fromisoformat(criteria["time"]).timestamp())
+
+            restaurants = await search_businesses(
+                session,
+                criteria["latitude"],
+                criteria["longitude"],
+                terms,
+                open_at=open_at,
+            )
             query = save_query(criteria, restaurants)
             nq.query = query
             nq.save()
