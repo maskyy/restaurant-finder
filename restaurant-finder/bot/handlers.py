@@ -23,13 +23,16 @@ async def start_command(msg: types.Message):
 
 @bot.message_handler(content_types=["text"])
 async def find_restaurants(msg: types.Message):
-    criteria = extract_search_criteria(msg.text)
+    criteria, nq = extract_search_criteria(msg.text)
     if criteria["location"] is None:
         return await bot.reply_to(msg, "Sorry, I couldn't understand the location.")
     async with ClientSession() as session:
-        lat, lon = await geocode_location(session, criteria["location"])
-        criteria["latitude"] = lat
-        criteria["longitude"] = lon
+        if criteria["latitude"] is None:
+            lat, lon = await geocode_location(session, criteria["location"])
+            criteria["latitude"] = lat
+            criteria["longitude"] = lon
+        nq.parsed = criteria
+        nq.save()
 
     await bot.reply_to(msg, criteria)
 

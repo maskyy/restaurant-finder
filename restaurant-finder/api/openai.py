@@ -4,6 +4,7 @@ from openai import OpenAI
 
 from ..config import CONFIG
 from ..log import log
+from ..models import NaturalQuery
 from ..types import SearchCriteria
 
 EXTRACT_PROMPT = "Extract the following details from the input: location, cuisine type, budget, rating, number of people, time. If no info, replace with N/A.\n\nInput: {user_input}\n\nDetails:"
@@ -16,7 +17,11 @@ def extract_criterion(data: str, pattern: str) -> str | None:
     return match.group(1) if match else None
 
 
-def extract_search_criteria(user_input: str) -> SearchCriteria:
+def extract_search_criteria(user_input: str) -> tuple[SearchCriteria, NaturalQuery]:
+    natural_query, new = NaturalQuery.get_or_create(query=user_input)
+    if not new and natural_query.parsed is not None:
+        return natural_query.parsed, natural_query
+
     response = ai.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -44,5 +49,9 @@ def extract_search_criteria(user_input: str) -> SearchCriteria:
         criteria["budget"] = int(criteria["budget"])
     if criteria["rating"] is not None:
         criteria["rating"] = float(criteria["rating"])
+    if criteria["guests"] is not None:
+        criteria["guests"] = int(criteria["guests"])
+    natural_query.parsed = criteria
+    natural_query.save()
 
-    return criteria
+    return criteria, natural_query

@@ -41,7 +41,7 @@ class BaseModel(Model):
 class NaturalQuery(BaseModel):
     id = UUIDField(primary_key=True, default=uuid4)
     query = TextField()
-    parsed = JSONField()
+    parsed = JSONField(null=True)
     created_at = DateTimeTZField(default=tznow)
 
     class Meta:
