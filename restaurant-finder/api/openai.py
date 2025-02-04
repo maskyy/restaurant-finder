@@ -13,6 +13,7 @@ location, cuisine, budget, rating, number_of_people, time.
 If no info, use null for missing details.
 For the location, translate it to English.
 For the time, provide an ISO datetime string. Relate CURRENT_TIMESTAMP to the time mentioned in the input.
+For the radius, use by default 1000 meters or convert to meters.
 Return the output as JSON formatted like this:
 {
   "location": "Paris",
@@ -20,7 +21,8 @@ Return the output as JSON formatted like this:
   "budget": 50,
   "rating": 4.4,
   "number_of_people": 3,
-  "time": "CURRENT_TIMESTAMP"
+  "time": "CURRENT_TIMESTAMP",
+  "radius": 1000
 }
 Here is the input:
 """
@@ -67,6 +69,7 @@ def extract_search_criteria(user_input: str) -> tuple[SearchCriteria, NaturalQue
         rating=details.get("rating", None),
         guests=details.get("number_of_people", None),
         time=details.get("time", None),
+        radius=details.get("radius", 1000),
         latitude=None,
         longitude=None,
         answer=answer,

@@ -21,6 +21,7 @@ Welcome to RestFind! What restaurants are you looking for? You can include the f
 - Rating: how well rated?
 - Number of people: how many guests?
 - Time: when?
+- Radius (by default 1 km): how far?
 """
 
 
@@ -83,10 +84,11 @@ async def find_restaurants(msg: types.Message):
                 open_at = int(datetime.fromisoformat(criteria["time"]).timestamp())
 
             restaurants = await search_businesses(
-                session,
-                criteria["latitude"],
-                criteria["longitude"],
-                terms,
+                session=session,
+                latitude=criteria["latitude"],
+                longitude=criteria["longitude"],
+                term=terms,
+                radius_meters=criteria["radius"],
                 open_at=open_at,
             )
             query = save_query(criteria, restaurants)
