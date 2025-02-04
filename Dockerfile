@@ -21,12 +21,13 @@ RUN apt-get install -y --no-install-recommends gcc libpq-dev build-essential
 RUN rm -rf /var/lib/apt/lists/*
 
 RUN pip install poetry
+RUN poetry config virtualenvs.create false
 
 COPY pyproject.toml poetry.lock .
 
 RUN poetry install --only main --no-root
 
-COPY restaurant-finder .
+COPY restaurant-finder restaurant-finder
 
 COPY --from=frontend /app/client/dist /app/client/dist
 
