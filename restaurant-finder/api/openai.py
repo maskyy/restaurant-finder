@@ -3,6 +3,7 @@ import re
 from openai import OpenAI
 
 from ..config import CONFIG
+from ..log import log
 from ..types import SearchCriteria
 
 EXTRACT_PROMPT = "Extract the following details from the input: location, cuisine type, budget, rating, number of people, time. If no info, replace with N/A.\n\nInput: {user_input}\n\nDetails:"
@@ -25,7 +26,9 @@ def extract_search_criteria(user_input: str) -> SearchCriteria:
     )
 
     answer = response.choices[0].message.content.strip()
+    log.debug("AI answer: %s", answer)
     details = answer.split("\n") 
+
     criteria = SearchCriteria(
         location=extract_criterion(details[0], r"Location: (.+)"),
         cuisine=extract_criterion(details[1], r"Cuisine type: (.+)"),
@@ -33,6 +36,8 @@ def extract_search_criteria(user_input: str) -> SearchCriteria:
         rating=extract_criterion(details[3], r"Rating: (\d+\.\d+)"),
         guests=extract_criterion(details[4], r"Number of people: (\d+)"),
         time=extract_criterion(details[5], r"Time: (.+)"),
+        latitude=None,
+        longitude=None,
         answer=answer,
     )
     if criteria["budget"] is not None:

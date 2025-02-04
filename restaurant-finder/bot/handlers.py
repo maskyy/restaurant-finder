@@ -1,6 +1,7 @@
 from telebot import types
 
 from ..api.openai import extract_search_criteria
+from ..api.opencage import geocode_location
 from .main import bot
 
 START_TEXT = """
@@ -24,6 +25,7 @@ async def find_restaurants(msg: types.Message):
     criteria = extract_search_criteria(msg.text)
     if criteria["location"] is None:
         return await bot.reply_to(msg, "Sorry, I couldn't understand the location.")
+    criteria |= geocode_location(criteria["location"])
 
     await bot.reply_to(msg, criteria)
 

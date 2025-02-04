@@ -18,7 +18,6 @@ bot = AsyncTeleBot(CONFIG["BOT_TOKEN"], exception_handler=BotExceptionHandler())
 
 
 async def init_bot():
-    print(CONFIG["WEBHOOK_URL"] + TELEGRAM_CALLBACK_PATH)
     await bot.set_webhook(CONFIG["WEBHOOK_URL"] + TELEGRAM_CALLBACK_PATH)
 
 

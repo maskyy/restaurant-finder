@@ -8,3 +8,6 @@ class SearchCriteria(TypedDict):
     rating: float | None
     guests: int | None
     time: str | None
+    latitude: float | None
+    longitude: float | None
+    answer: str
