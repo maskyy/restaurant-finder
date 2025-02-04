@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "restaurant-finder"
+version = "0.1.0"
+description = "My 2nd test task"
+authors = ["Maksim Abramov <62175286+maskyy@users.noreply.github.com>"]
+license = "The Unlicense"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi-slim = "^0.115.8"
+pytelegrambotapi = "^4.26.0"
+python-dotenv = "^1.0.1"
+uvicorn = "^0.34.0"
+psycopg2-binary = "^2.9.9"
+aiohttp = {extras = ["speedups"], version = "^3.11.11"}
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.9.4"
+fastapi = "^0.115.8"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
