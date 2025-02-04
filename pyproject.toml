@@ -15,6 +15,7 @@ uvicorn = "^0.34.0"
 psycopg2-binary = "^2.9.9"
 aiohttp = {extras = ["speedups"], version = "^3.11.11"}
 openai = "^1.61.0"
+peewee = "^3.17.8"
 
 
 [tool.poetry.group.dev.dependencies]
