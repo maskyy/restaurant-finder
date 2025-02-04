@@ -27,10 +27,10 @@ Generate a text that introduces the user's request. The text should be in user's
 Include the text as the "intro_text" key.
 
 Examples:
-- **User input:** "Looking for a rooftop Italian restaurant in Rome, mid-range budget, for dinner."  
-  **intro_text:** "Here are some rooftop Italian restaurants in Rome for dinner (mid-range budget)."  
-- **User input:** "Ищу уютное кафе с террасой и завтраками в Барселоне, недорого."  
-  **intro_text:** "Вот уютные кафе с террасой и завтраками в Барселоне (дешево)."  
+- **User input:** "Looking for a rooftop Italian restaurant in Rome, mid-range budget, for dinner."
+  **intro_text:** "Here are some rooftop Italian restaurants in Rome for dinner (mid-range budget)."
+- **User input:** "Ищу уютное кафе с террасой и завтраками в Барселоне, недорого."
+  **intro_text:** "Вот уютные кафе с террасой и завтраками в Барселоне (дешево)."
 
 Step 4 - return the output (only JSON and nothing else!):
 Return the output as JSON formatted like this:
