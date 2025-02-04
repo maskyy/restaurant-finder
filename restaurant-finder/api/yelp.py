@@ -1,7 +1,6 @@
 from aiohttp import ClientSession
 
 from ..config import CONFIG
-from ..models import tznow
 
 HEADERS = {"Authorization": "Bearer " + CONFIG["YELP_API_KEY"]}
 

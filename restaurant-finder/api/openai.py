@@ -8,8 +8,8 @@ from ..log import log
 from ..models import NaturalQuery, tznow
 from ..types import SearchCriteria
 
-EXTRACT_PROMPT = """Extract the following details from the input and return them as a JSON object with keys: 
-location, cuisine, budget, rating, number_of_people, time. 
+EXTRACT_PROMPT = """Extract the following details from the input and return them as a JSON object with keys:
+location, cuisine, budget, rating, number_of_people, time.
 If no info, use null for missing details.
 For the location, translate it to English.
 For the time, provide an ISO datetime string. Relate CURRENT_TIMESTAMP to the time mentioned in the input.
@@ -58,7 +58,7 @@ def extract_search_criteria(user_input: str) -> tuple[SearchCriteria, NaturalQue
         details = json.loads(answer)
     except json.JSONDecodeError:
         log.error("Failed to parse JSON: %s", answer)
-        raise ValueError("Failed to parse OpenAI response")
+        raise ValueError("Failed to parse OpenAI response") from None
 
     criteria = SearchCriteria(
         location=details.get("location", None),
