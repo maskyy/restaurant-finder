@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import APIRouter, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from .bot.handlers import *  # noqa
 from .bot.main import get_bot_info, init_bot, shutdown_bot
@@ -29,6 +30,13 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[CONFIG["SERVER_URL"]],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 api = APIRouter(prefix=PREFIX)
 api.include_router(callbacks.router)
