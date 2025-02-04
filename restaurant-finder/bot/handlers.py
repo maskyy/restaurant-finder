@@ -1,3 +1,4 @@
+from aiohttp import ClientSession
 from telebot import types
 
 from ..api.openai import extract_search_criteria
@@ -25,7 +26,10 @@ async def find_restaurants(msg: types.Message):
     criteria = extract_search_criteria(msg.text)
     if criteria["location"] is None:
         return await bot.reply_to(msg, "Sorry, I couldn't understand the location.")
-    criteria |= geocode_location(criteria["location"])
+    async with ClientSession() as session:
+        lat, lon = await geocode_location(session, criteria["location"])
+        criteria["latitude"] = lat
+        criteria["longitude"] = lon
 
     await bot.reply_to(msg, criteria)
 
