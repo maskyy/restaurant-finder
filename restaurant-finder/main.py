@@ -7,12 +7,14 @@ from .bot.main import get_bot_info, init_bot, shutdown_bot
 from .config import CONFIG
 from .const import PREFIX, TITLE
 from .log import setup_logger
+from .models import create_tables
 from .routes import callbacks
 
 
 @asynccontextmanager
 async def lifespan(_):
     setup_logger()
+    create_tables()
     await init_bot()
     await get_bot_info()
     yield
