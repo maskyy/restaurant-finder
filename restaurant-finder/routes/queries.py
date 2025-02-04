@@ -19,6 +19,7 @@ async def get_query(id: str):
         "restaurants": [
             {
                 "name": restaurant.name,
+                "price": restaurant.price,
                 "latitude": restaurant.latitude,
                 "longitude": restaurant.longitude,
                 "url": restaurant.url,
