@@ -1,6 +1,6 @@
 from telebot import types
 
-from ..ai.main import extract_search_criteria
+from ..api.openai import extract_search_criteria
 from .main import bot
 
 START_TEXT = """
