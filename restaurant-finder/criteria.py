@@ -9,6 +9,7 @@ class SearchCriteria(TypedDict):
     guests: int | None
     time: str | None
     radius: int
+    intro_text: str
     latitude: float | None
     longitude: float | None
     answer: str

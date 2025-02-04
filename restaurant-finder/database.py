@@ -2,11 +2,12 @@ from .criteria import SearchCriteria
 from .models import Query, Restaurant
 
 
-def save_query(query: SearchCriteria, restaurants: list[dict[str]]) -> Query:
+def save_query(criteria: SearchCriteria, restaurants: list[dict[str]]) -> Query:
     q = Query.create(
-        name=query["location"],
-        latitude=query["latitude"],
-        longitude=query["longitude"],
+        intro_text=criteria["intro_text"],
+        name=criteria["location"],
+        latitude=criteria["latitude"],
+        longitude=criteria["longitude"],
     )
     for restaurant in restaurants:
         Restaurant.create(
