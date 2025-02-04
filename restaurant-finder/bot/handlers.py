@@ -11,7 +11,6 @@ from ..log import log
 from ..models import Query
 from .main import bot
 
-
 START_TEXT = """
 Welcome to RestFind! What restaurants are you looking for? You can include the following:
 - Location: where? (required)

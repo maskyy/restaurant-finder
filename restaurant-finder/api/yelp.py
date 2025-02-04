@@ -2,7 +2,8 @@ from aiohttp import ClientSession
 
 from ..config import CONFIG
 
-HEADERS = {"Authorization": f"Bearer " + CONFIG["YELP_API_KEY"]}
+HEADERS = {"Authorization": "Bearer " + CONFIG["YELP_API_KEY"]}
+
 
 async def search_businesses(
     session: ClientSession,

@@ -17,5 +17,5 @@ def save_query(query: SearchCriteria, restaurants: list[dict[str]]) -> Query:
             url=restaurant.get("url", None),
             rating=restaurant.get("rating", None),
             review_count=restaurant.get("review_count", None),
-       )
+        )
     return q

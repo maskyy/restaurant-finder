@@ -8,7 +8,7 @@ from .config import CONFIG
 from .const import PREFIX, TITLE
 from .log import setup_logger
 from .models import create_tables
-from .routes import callbacks
+from .routes import callbacks, frontend, queries
 
 
 @asynccontextmanager
@@ -23,13 +23,18 @@ async def lifespan(_):
 
 app = FastAPI(
     title=TITLE,
-    root_path=PREFIX,
+    openapi_docs=PREFIX + "/openapi.json",
+    docs_url=PREFIX + "/docs",
+    redoc_url=PREFIX + "/redoc",
     lifespan=lifespan,
 )
 
-root = APIRouter()
-root.include_router(callbacks.router)
-app.include_router(root)
+
+api = APIRouter(prefix=PREFIX)
+api.include_router(callbacks.router)
+api.include_router(queries.router)
+app.include_router(api)
+app.include_router(frontend.router)
 
 
 if __name__ == "__main__":
