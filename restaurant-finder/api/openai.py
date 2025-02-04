@@ -7,18 +7,23 @@ from ..log import log
 from ..models import NaturalQuery
 from ..types import SearchCriteria
 
-EXTRACT_PROMPT = "Extract the following details from the input: location, cuisine type, budget, rating, number of people, time. If no info, replace with N/A.\n\nInput: {user_input}\n\nDetails:"
+EXTRACT_PROMPT = "Extract the following details from the input: location, cuisine type, budget, rating, number of people, time (converted to ISO datetime). If no info, replace with N/A.\n\nInput: {user_input}\n\nDetails:"
 
 ai = OpenAI(api_key=CONFIG["OPENAI_API_KEY"])
 
 
 def extract_criterion(data: str, pattern: str) -> str | None:
     match = re.search(pattern, data)
-    return match.group(1) if match else None
+    if match is None:
+        return None
+    group = match.group(1)
+    if group == "N/A":
+        return None
+    return group
 
 
 def extract_search_criteria(user_input: str) -> tuple[SearchCriteria, NaturalQuery]:
-    natural_query, new = NaturalQuery.get_or_create(query=user_input)
+    natural_query, new = NaturalQuery.get_or_create(user_query=user_input)
     if not new and natural_query.parsed is not None:
         return natural_query.parsed, natural_query
 

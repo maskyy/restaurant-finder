@@ -38,16 +38,6 @@ class BaseModel(Model):
         only_save_dirty = True
 
 
-class NaturalQuery(BaseModel):
-    id = UUIDField(primary_key=True, default=uuid4)
-    query = TextField()
-    parsed = JSONField(null=True)
-    created_at = DateTimeTZField(default=tznow)
-
-    class Meta:
-        table_name = "natural_queries"
-
-
 class Query(BaseModel):
     id = UUIDField(primary_key=True, default=uuid4)
     name = TextField()
@@ -59,9 +49,20 @@ class Query(BaseModel):
         table_name = "queries"
 
 
+class NaturalQuery(BaseModel):
+    id = UUIDField(primary_key=True, default=uuid4)
+    user_query = TextField()
+    parsed = JSONField(null=True)
+    query = ForeignKeyField(Query, null=True)
+    created_at = DateTimeTZField(default=tznow)
+
+    class Meta:
+        table_name = "natural_queries"
+
+
 class Restaurant(BaseModel):
     id = UUIDField(primary_key=True, default=uuid4)
-    query = ForeignKeyField(Query, backref="restaurants", on_delete="CASCADE")
+    query = ForeignKeyField(Query, backref="restaurants")
     name = TextField()
     latitude = FloatField()
     longitude = FloatField()
