@@ -1,22 +1,33 @@
-// Query.js
-import React from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import MapComponent from './MapComponent';
+import axiosInstance from '../axiosInstance';
 
 const Query = () => {
   const { id } = useParams();
+  const [data, setData] = useState(null);
 
-  // Example center coordinates and points
-  const center = [51.505, -0.09]; // Replace with dynamic coordinates if needed
-  const points = [
-    { name: 'Point 1', coordinates: [51.505, -0.09] },
-    { name: 'Point 2', coordinates: [51.51, -0.1] },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosInstance.get(`/queries/${id}`);
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  if (!data) {
+    return <div>Loading...</div>;
+  }
+
+  const { current_location: currentLocation, restaurants } = data;
 
   return (
     <div>
-      <h1>Query Page for ID: {id}</h1>
-      <MapComponent center={center} points={points} />
+      <MapComponent currentLocation={currentLocation} restaurants={restaurants} />
     </div>
   );
 };
