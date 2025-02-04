@@ -36,7 +36,14 @@ def prepare_answer(query: Query) -> tuple[str, list[InlineKeyboardMarkup]]:
         name = restaurant.name
         if restaurant.url is not None:
             name = f"[{name}]({restaurant.url})"
-        text += f"\n- {name} ({restaurant.rating} stars, {restaurant.review_count} reviews)"
+        in_braces = []
+        if restaurant.price is not None:
+            in_braces.append(restaurant.price)
+        if restaurant.rating is not None:
+            in_braces.append(f"{restaurant.rating} stars")
+        if restaurant.review_count is not None:
+            in_braces.append(f"{restaurant.review_count} reviews")
+        text += f"\n- {name} ({', '.join(in_braces)})"
 
     button = InlineKeyboardButton(
         text="Show on map",

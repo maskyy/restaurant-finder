@@ -64,6 +64,7 @@ class Restaurant(BaseModel):
     id = UUIDField(primary_key=True, default=uuid4)
     query = ForeignKeyField(Query, backref="restaurants")
     name = TextField()
+    price = TextField(null=True)
     latitude = FloatField()
     longitude = FloatField()
     url = TextField(null=True)
