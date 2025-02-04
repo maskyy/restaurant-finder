@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from aiohttp import ClientSession
 from telebot import types
 from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -19,6 +21,7 @@ Welcome to RestFind! What restaurants are you looking for? You can include the f
 - Rating: how well rated?
 - Number of people: how many guests?
 - Time: when?
+- Radius (by default 1 km): how far?
 """
 
 
@@ -31,7 +34,7 @@ def prepare_answer(query: Query) -> tuple[str, list[InlineKeyboardMarkup]]:
     if len(query.restaurants) == 0:
         return f"No restaurants found at '{query.name}' :(", []
 
-    text = f"I've found the following places at '{query.name}':"
+    text = query.intro_text
     for restaurant in query.restaurants:
         name = restaurant.name
         if restaurant.url is not None:
@@ -40,7 +43,7 @@ def prepare_answer(query: Query) -> tuple[str, list[InlineKeyboardMarkup]]:
         if restaurant.price is not None:
             in_braces.append(restaurant.price)
         if restaurant.rating is not None:
-            in_braces.append(f"{restaurant.rating} stars")
+            in_braces.append(f"{restaurant.rating} ⭐️")
         if restaurant.review_count is not None:
             in_braces.append(f"{restaurant.review_count} reviews")
         text += f"\n- {name} ({', '.join(in_braces)})"
@@ -56,7 +59,11 @@ def prepare_answer(query: Query) -> tuple[str, list[InlineKeyboardMarkup]]:
 
 @bot.message_handler(content_types=["text"])
 async def find_restaurants(msg: types.Message):
-    criteria, nq = extract_search_criteria(msg.text)
+    try:
+        criteria, nq = extract_search_criteria(msg.text)
+    except ValueError:
+        return await bot.reply_to(msg, "Sorry, I couldn't understand the query.")
+
     if criteria["location"] is None:
         return await bot.reply_to(msg, "Sorry, I couldn't understand the location.")
     async with ClientSession() as session:
@@ -65,14 +72,27 @@ async def find_restaurants(msg: types.Message):
             criteria["latitude"] = lat
             criteria["longitude"] = lon
         if criteria["latitude"] is None:
-            return await bot.reply_to(msg, f"Sorry, I couldn't understand the location " + criteria["location"])
+            return await bot.reply_to(msg, "Sorry, I couldn't understand the location " + criteria["location"])
 
         nq.parsed = criteria
         nq.save()
         query = nq.query
         if query is None:
             terms = criteria["cuisine"]
-            restaurants = await search_businesses(session, criteria["latitude"], criteria["longitude"], terms)
+            if criteria.get("extras", None) is not None:
+                terms += "," + ",".join(criteria["extras"])
+            open_at = None
+            if criteria["time"] is not None:
+                open_at = int(datetime.fromisoformat(criteria["time"]).timestamp())
+
+            restaurants = await search_businesses(
+                session=session,
+                latitude=criteria["latitude"],
+                longitude=criteria["longitude"],
+                term=terms,
+                radius_meters=criteria["radius"],
+                open_at=open_at,
+            )
             query = save_query(criteria, restaurants)
             nq.query = query
             nq.save()

@@ -8,19 +8,18 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-fastapi-slim = "^0.115.8"
+fastapi = "^0.111.0"
 pytelegrambotapi = "^4.26.0"
 python-dotenv = "^1.0.1"
-uvicorn = "^0.34.0"
+uvicorn = "^0.20.0"
 psycopg2-binary = "^2.9.9"
-aiohttp = {extras = ["speedups"], version = "^3.11.11"}
-openai = "^1.61.0"
+aiohttp = {extras = ["speedups"], version = "^3.8.6"}
+openai = "^1.12.0"
 peewee = "^3.17.8"
 
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.9.4"
-fastapi = "^0.115.8"
 
 [build-system]
 requires = ["poetry-core"]

@@ -40,6 +40,7 @@ class BaseModel(Model):
 
 class Query(BaseModel):
     id = UUIDField(primary_key=True, default=uuid4)
+    intro_text = TextField(null=True)
     name = TextField()
     latitude = FloatField()
     longitude = FloatField()
