@@ -4,9 +4,9 @@ import re
 from openai import OpenAI
 
 from ..config import CONFIG
+from ..criteria import SearchCriteria
 from ..log import log
 from ..models import NaturalQuery, tznow
-from ..types import SearchCriteria
 
 EXTRACT_PROMPT = """Extract the following details from the input and return them as a JSON object with keys:
 location, cuisine, budget, rating, number_of_people, time.

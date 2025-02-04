@@ -1,5 +1,5 @@
+from .criteria import SearchCriteria
 from .models import Query, Restaurant
-from .types import SearchCriteria
 
 
 def save_query(query: SearchCriteria, restaurants: list[dict[str]]) -> Query:
