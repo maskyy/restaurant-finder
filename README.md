@@ -42,12 +42,13 @@ This project is a test task challenge to develop an MVP within 24 hours. The app
     Copy `.env.example` and set the following important variables:
     ```env
         BOT_TOKEN=bot_token
-        WEBHOOK_URL=https://example.com
-        SERVER_URL=https://example.org
+        WEBHOOK_URL=https://example.com  # backend
+        SERVER_URL=https://example.org  # frontend
         OPENAI_API_KEY=secret_key
         YELP_API_KEY=yelp_api_key
         OPENCAGE_API_KEY=opencage_api_key
     ```
+    Copy `client/config.js.example` and set the BASE_URL to WEBHOOK_URL.
 
 4. **Access the application**:
     - **Web Interface**: Open your browser and go to `http://localhost:5173`.
