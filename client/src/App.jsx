@@ -12,7 +12,7 @@ const App = () => {
         <Route path="/query/:id" element={<Query />} />
       </Routes>
     </Router>
-  )
-}
+  );
+};
 
 export default App;

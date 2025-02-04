@@ -3,8 +3,6 @@ import { useParams } from 'react-router-dom';
 import MapComponent from './MapComponent';
 import axiosInstance from '../axiosInstance';
 
-
-
 const Query = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
@@ -15,7 +13,7 @@ const Query = () => {
         const response = await axiosInstance.get(`/queries/${id}`);
         setData(response.data);
       } catch (error) {
-        console.error("Error fetching data: ", error);
+        console.error('Error fetching data: ', error);
       }
     };
     fetchData();
