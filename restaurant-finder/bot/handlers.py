@@ -64,6 +64,9 @@ async def find_restaurants(msg: types.Message):
             lat, lon = await geocode_location(session, criteria["location"])
             criteria["latitude"] = lat
             criteria["longitude"] = lon
+        if criteria["latitude"] is None:
+            return await bot.reply_to(msg, f"Sorry, I couldn't understand the location " + criteria["location"])
+
         nq.parsed = criteria
         nq.save()
         query = nq.query
