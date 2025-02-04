@@ -42,4 +42,3 @@ async def handle_location(msg: types.Message):
 @bot.message_handler(func=lambda _: True)
 async def unknown_message(msg: types.Message):
     await bot.reply_to(msg, "Sorry, I don't understand that command.")
-

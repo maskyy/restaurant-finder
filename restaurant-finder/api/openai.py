@@ -27,7 +27,7 @@ def extract_search_criteria(user_input: str) -> SearchCriteria:
 
     answer = response.choices[0].message.content.strip()
     log.debug("AI answer: %s", answer)
-    details = answer.split("\n") 
+    details = answer.split("\n")
 
     criteria = SearchCriteria(
         location=extract_criterion(details[0], r"Location: (.+)"),
