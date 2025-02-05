@@ -1,5 +1,7 @@
 # Restaurant Finder - Test Task Challenge
 
+The task description can be found [here](https://docs.google.com/document/d/136AU11_TRwX0rL3lKxOZ8CB4IozaAG7QgPBBDqaEm8Y/edit?tab=t.0#heading=h.eyfasx306zo9).
+
 ## Introduction
 This project is a test task challenge to develop an MVP within 24 hours. The application allows users to search for restaurants based on specific criteria using a Telegram bot and displays the results on a React web interface with an interactive map.
 
